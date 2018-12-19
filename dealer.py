@@ -1,24 +1,30 @@
 import zmq
 import time
-import serial
 
-def start_dealing(ser, sock):
+def start_dealing(sock_tts, sock_face):
     while True:
-        line = ser.readline().decode("utf-8").strip()
-        values = line.split(',')
-        msg = {"values": values}
-        sock.send_json(msg)
-        print(msg)
+        inp = input().strip()
+        vals = inp.split(' ')
+        if(vals[0]=='T'):
+            msg = {"message": ' '.join(vals[1:])}
+            sock_tts.send_json(msg)
+            print(msg)
+        if(vals[0]=='F'):
+            msg = {'x': vals[1], 'y': vals[2], 'e': vals[3]}
+            sock_face.send_json(msg)
+            print(msg)
 
 def dealer():
     reconnect_interval = 0.5;
     while True:
-        try:
-            ser = serial.Serial("/dev/ttyUSB0", 115200) 
+        try: 
             context = zmq.Context()
-            sock = context.socket(zmq.PUSH)
-            sock.connect("tcp://127.0.0.1:5559")
-            start_dealing(ser, sock)
+            sock_tts = context.socket(zmq.PUSH)
+            sock_tts.connect("tcp://127.0.0.1:5559")
+            context2 = zmq.Context()
+            sock_face = context.socket(zmq.PUSH)
+            sock_face.connect("tcp://127.0.0.1:65000")
+            start_dealing(sock_tts, sock_face)
         except Exception as e:
             print(e)
         finally:
