@@ -1,9 +1,12 @@
 #!/bin/env/python3
 import zmq
+import sys
 import time
 import bottle
 from bottle import request, response
 from bottle import post, get, put, delete
+
+DEBUG = True
 
 app = application = bottle.default_app()
 
@@ -16,33 +19,53 @@ sock_face.connect("tcp://127.0.0.1:65000")
 
 @post('/face')
 def process_face_action():
+    global DEBUG
     try:
         try:
-            data = request.json()
-            sock_face.send_json(data)
+            data = request.json
         except:
             raise ValueError
+
+        if not DEBUG:
+            try:
+                sock_face.send_json(data)
+            except:
+                raise KeyError
     except ValueError:
         response.status = 400
         return
+    except KeyError:
+        response.status = 500
+        return
     response.headers['Content-Type'] = 'application/json'
-    return json.dumps(data)
+    return data
 
 @post('/tts')
 def process_tts_action():
+    global DEBUG
     try:
         try:
-            data = request.json()
-            sock_tts.send_json(data)
+            data = request.json
         except:
             raise ValueError
+
+        if not DEBUG:
+            try:
+                sock_tts.send_json(data)
+            except:
+                raise KeyError
     except ValueError:
         response.status = 400
         return
+    except KeyError:
+        response.status = 500
+        return
     response.headers['Content-Type'] = 'application/json'
-    return json.dumps(data)
+    return data
 
 
 if __name__ == '__main__':
+    DEBUG = len(sys.argv) > 1
+    print(f"DEBUG mode is ${DEBUG}")
     bottle.run(host='0.0.0.0', port=31337)
 
