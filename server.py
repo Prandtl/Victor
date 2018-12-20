@@ -3,6 +3,7 @@ import zmq
 import sys
 import time
 import bottle
+import json
 from bottle import request, response
 from bottle import post, get, put, delete
 
@@ -62,6 +63,35 @@ def process_tts_action():
         return
     response.headers['Content-Type'] = 'application/json'
     return data
+
+@post('/scripts')
+def process_script():
+    global DEBUG
+    try:
+        try:
+            data = request.json
+        except:
+            raise ValueError
+
+        if not DEBUG:
+            try:
+                for d in data:
+                    print(d);
+                    if d["type"] == "face":
+                        sock_face.send_json(d["payload"])
+                    elif d["type"] == "voice":
+                        sock_tts.send_json(d["payload"])
+                    # sock_tts.send_json(data)
+            except Exception as e:
+                raise KeyError
+    except ValueError:
+        response.status = 400
+        return
+    except KeyError:
+        response.status = 500
+        return
+    response.headers['Content-Type'] = 'application/json'
+    return
 
 
 if __name__ == '__main__':
