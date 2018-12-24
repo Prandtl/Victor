@@ -93,6 +93,42 @@ def process_script():
     response.headers['Content-Type'] = 'application/json'
     return
 
+@post('/turnon')
+def process_turnon():
+    global DEBUG
+    try:
+        if not DEBUG:
+            try:
+                pass
+            except Exception as e:
+                raise KeyError
+    except ValueError:
+        response.status = 400
+        return
+    except KeyError:
+        response.status = 500
+        return
+    response.headers['Content-Type'] = 'application/json'
+    return
+
+@post('/turnoff')
+def process_turnon():
+    global DEBUG
+    try:
+        if not DEBUG:
+            try:
+                pass
+            except Exception as e:
+                raise KeyError
+    except ValueError:
+        response.status = 400
+        return
+    except KeyError:
+        response.status = 500
+        return
+    response.headers['Content-Type'] = 'application/json'
+    return
+
 
 if __name__ == '__main__':
     DEBUG = len(sys.argv) > 1
