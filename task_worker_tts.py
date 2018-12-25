@@ -11,10 +11,16 @@ def consumer():
     reciever = context.socket(zmq.PULL)
     reciever.connect("tcp://127.0.0.1:5560")
     while True:
-        work = reciever.recv_json()
-        data = work["message"]
-        message = urlparse.quote(data)
-        p = vlc.MediaPlayer('https://tts.voicetech.yandex.net/tts?text=' + message)
-        p.play()
+        try:
+            work = reciever.recv_json()
+            data = work["message"]
+            message = urlparse.quote(data)
+            p = vlc.MediaPlayer('https://tts.voicetech.yandex.net/tts?text=' + message)
+            p.play()
+        except Exception as e:
+            print("TTS", e)
+            context = zmq.Context()
+            reciever = context.socket(zmq.PULL)
+            reciever.connect("tcp://127.0.0.1:5560")
 
 consumer()
