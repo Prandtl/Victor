@@ -80,7 +80,7 @@ def process_script():
                     if d["type"] == "face":
                         sock_face.send_json(d["payload"])
                     elif d["type"] == "voice":
-                        sock_tts.send_json(d["payload"])
+                        sock_sounds.send_json(d["payload"])
                     time.sleep(0.5)
                     # sock_tts.send_json(data)
             except Exception as e:
