@@ -12,8 +12,8 @@ DEBUG = True
 app = application = bottle.default_app()
 
 context = zmq.Context()
-sock_tts = context.socket(zmq.PUSH)
-sock_tts.connect("tcp://127.0.0.1:5559")
+sock_sounds = context.socket(zmq.PUSH)
+sock_sounds.connect("tcp://127.0.0.1:5565")
 context2 = zmq.Context()
 sock_face = context.socket(zmq.PUSH)
 sock_face.connect("tcp://127.0.0.1:65000")
@@ -42,7 +42,7 @@ def process_face_action():
     return data
 
 @post('/tts')
-def process_tts_action():
+def process_sounds_action():
     global DEBUG
     try:
         try:

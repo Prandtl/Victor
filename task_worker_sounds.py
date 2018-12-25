@@ -13,8 +13,8 @@ def consumer():
     while True:
         try:
             work = reciever.recv_json()
-            path = work["message"]
-            p = vlc.MediaPlayer("./" + path)
+            path = work["fileName"]
+            p = vlc.MediaPlayer("./sounds/" + path)
             p.play()
         except Exception as e:
             print("SOUNDS", e)
