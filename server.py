@@ -52,7 +52,7 @@ def process_sounds_action():
 
         if not DEBUG:
             try:
-                sock_tts.send_json(data)
+                sock_sounds.send_json(data)
             except:
                 raise KeyError
     except ValueError:
@@ -76,7 +76,7 @@ def process_script():
         if not DEBUG:
             try:
                 for d in data:
-                    print(d);
+                    print(d)
                     if d["type"] == "face":
                         sock_face.send_json(d["payload"])
                     elif d["type"] == "voice":
