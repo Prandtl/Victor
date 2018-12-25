@@ -18,6 +18,7 @@ context2 = zmq.Context()
 sock_face = context.socket(zmq.PUSH)
 sock_face.connect("tcp://127.0.0.1:65000")
 
+
 @post('/face')
 def process_face_action():
     global DEBUG
@@ -41,6 +42,7 @@ def process_face_action():
     response.headers['Content-Type'] = 'application/json'
     return data
 
+
 @post('/tts')
 def process_sounds_action():
     global DEBUG
@@ -63,6 +65,7 @@ def process_sounds_action():
         return
     response.headers['Content-Type'] = 'application/json'
     return data
+
 
 @post('/scripts')
 def process_script():
@@ -93,19 +96,7 @@ def process_script():
         return
     response.headers['Content-Type'] = 'application/json'
     return
-    
-    try:
-        try:
-            data = request.json
-        except:
-            raise ValueError
 
-        if not DEBUG:
-            try:
-                sock_sounds.send_json(data)
-            except:
-                raise KeyError
- 
 @post('/turnon')
 def process_turnon():
     global DEBUG
@@ -117,10 +108,9 @@ def process_turnon():
 
         if not DEBUG:
             try:
-                sock_sounds.send_json({"fileName":"startup.mp3"})
+                sock_sounds.send_json({"fileName": "startup.mp3"})
             except:
                 raise KeyError
-
 
     except ValueError:
         response.status = 400
@@ -130,6 +120,7 @@ def process_turnon():
         return
     response.headers['Content-Type'] = 'application/json'
     return
+
 
 @post('/turnoff')
 def process_turnon():
@@ -154,4 +145,3 @@ if __name__ == '__main__':
     DEBUG = len(sys.argv) > 1
     #print(f"DEBUG mode is ${DEBUG}")
     bottle.run(host='0.0.0.0', port=31337)
-
