@@ -2,5 +2,7 @@
 echo "YO"
 
 python3 streamer_device_face.py &
+python3 streamer_device_sounds.py &
 python3 server.py &
 python3 task_worker_face.py &
+python3 task_worker_sounds.py &

@@ -93,16 +93,35 @@ def process_script():
         return
     response.headers['Content-Type'] = 'application/json'
     return
+    
+    try:
+        try:
+            data = request.json
+        except:
+            raise ValueError
 
+        if not DEBUG:
+            try:
+                sock_sounds.send_json(data)
+            except:
+                raise KeyError
+ 
 @post('/turnon')
 def process_turnon():
     global DEBUG
     try:
+        try:
+            data = request.json
+        except:
+            raise ValueError
+
         if not DEBUG:
             try:
-                pass
-            except Exception as e:
+                sock_sounds.send_json({"fileName":"startup.mp3"})
+            except:
                 raise KeyError
+
+
     except ValueError:
         response.status = 400
         return
