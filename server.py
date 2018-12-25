@@ -81,6 +81,7 @@ def process_script():
                         sock_face.send_json(d["payload"])
                     elif d["type"] == "voice":
                         sock_tts.send_json(d["payload"])
+                    time.sleep(0.5)
                     # sock_tts.send_json(data)
             except Exception as e:
                 raise KeyError
