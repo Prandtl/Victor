@@ -131,7 +131,7 @@ def process_turnon():
 
 
 if __name__ == '__main__':
-    DEBUG = len(sys.argv) > 1
+    #DEBUG = len(sys.argv) > 1
     print(f"DEBUG mode is ${DEBUG}")
     bottle.run(host='0.0.0.0', port=31337)
 
