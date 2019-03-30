@@ -15,7 +15,7 @@ def consumer():
         try:
             work = reciever.recv_json()
             path = work["fileName"]
-            pygame.mixer.music.load("./sounds/" + path)
+            pygame.mixer.music.load("/home/pi/Documents/Victor/sounds/" + path)
             pygame.mixer.music.play()
 
         except Exception as e:
